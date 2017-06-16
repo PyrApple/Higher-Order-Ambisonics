@@ -25,7 +25,7 @@ dirs = dirs_deg*pi/180;
 % initialize SH matrix
 R_N = zeros(Nharm, Ndirs);
 % zero order
-R_N(1,:) = 1/sqrt(4*pi);
+R_N(1,:) = 1;
 % higher orders
 if N>0 
     idx_R = 1;
@@ -40,7 +40,7 @@ if N>0
         Pnm = uncondon .* [Pnm(end:-1:2, :); Pnm];
         
         % normalisations
-        norm_real = sqrt( (2*n+1)*factorial(n-m) ./ (4*pi*factorial(n+m)) );
+        norm_real = sqrt( (2*n+1)*factorial(n-m) ./ factorial(n+m) );
         
         % convert to matrix, for direct matrix multiplication with the rest
         Nnm = norm_real * ones(1,Ndirs);
@@ -51,7 +51,7 @@ if N>0
         CosSin(n+1,:) = ones(1,size(dirs,1));
         % positive and negative degrees
         CosSin(m(2:end)+n+1,:) = sqrt(2)*cos(m(2:end)*dirs(:,1)');
-        CosSin(-m(end:-1:2)+n+1,:) = sqrt(2)*sin(m(end:-1:2)*dirs(:,1)');
+        CosSin(-m(end:-1:2)+n+1,:) = - sqrt(2)*sin(m(end:-1:2)*dirs(:,1)');
         Rnm = Nnm .* Pnm .* CosSin;
         
         R_N(idx_R + (1:2*n+1), :) = Rnm;
